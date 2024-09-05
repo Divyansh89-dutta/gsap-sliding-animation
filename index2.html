@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gilroy:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Gilroy', sans-serif;
+        }
+
+        .slider-item figure {
+            position: relative;
+            padding-bottom: 50%;
+            overflow: hidden;
+        }
+
+        .slider-item figure img {
+            position: absolute;
+            width: 100%;
+        }
+
+        .slider-progress-bar {
+            transform-origin: 0 0;
+        }
+    </style>
+</head>
+<body class="h-screen overflow-hidden flex justify-center items-center bg-[#16484d]">
+    <nav class="fixed top-0 w-full flex justify-between items-center">
+        <a href="#" class="p-8 text-white text-lg no-underline">Divyansh</a>
+        <a href="#" class="p-8 text-white text-lg no-underline">Simple animation</a>
+    </nav>
+    <a href="#" id="showreel" class="absolute text-white no-underline bottom-0 right-0 p-8 text-lg">Showreel</a>
+
+    <div class="slider w-full cursor-grab">
+        <div class="slider-wrapper whitespace-nowrap">
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img  src="https://images.unsplash.com/photo-1529788295308-1eace6f67388?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8dW5pdmVyc2V8ZW58MHwwfDB8fHww" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1598725868058-3a08bbf8a3c2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjJ8fHVuaXZlcnNlfGVufDB8MHwwfHx8MA%3D%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1585961265340-0bde8bbf00f6?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzV8fHVuaXZlcnNlfGVufDB8MHwwfHx8MA%3D%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1592636120953-3d2b28ebfd69?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fHVuaXZlcnNlfGVufDB8MHwwfHx8MA%3D%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fHVuaXZlcnNlfGVufDB8MHwwfHx8MA%3D%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1511798616182-aab3698ac53e?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTJ8fHVuaXZlcnNlfGVufDB8MHwwfHx8MA%3D%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1485724745104-ae0f55940bc1?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTQ0fHx1bml2ZXJzZXxlbnwwfDB8MHx8fDA%3D" alt="">
+                </figure>
+            </div>
+            <div class="slider-item inline-block  w-[40vw] p-[3vw]">
+                <figure>
+                    <img src="https://images.unsplash.com/photo-1532787799187-93655e51d472?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTc4fHx1bml2ZXJzZXxlbnwwfDB8MHx8fDA%3D" alt="">
+                </figure>
+            </div>
+        </div>
+    </div>
+    <div class="slider-progress fixed bottom-0 left-0 w-[20vw] h-[2px] m-8 bg-white bg-opacity-10">
+        <div class="slider-progress-bar absolute w-full h-full bg-white bg-opacity-80 scale-x-0"></div>
+    </div>
+    <script>
+        const lerp = (f0, f1, t) => (1 - t) * f0 + t * f1;
+        const clamp = (val, min, max) => Math.max(min, Math.min(val, max));
+        class DragScroll {
+            constructor(obj){
+                this.el = document.querySelector(obj.el);
+                this.wrap = document.querySelector(obj.wrap);
+                this.items = document.querySelectorAll(obj.items);
+                this.bar = document.querySelector(obj.bar);
+                this.init();
+            } 
+            init(){
+                this.progress = 0;
+                this.speed = 0;
+                this.oldX = 0;
+                this.x = 0;
+                this.playrate = 0;
+
+                this.bindings();
+                this.events();
+                this.calculate();
+                this.raf();
+            }
+            bindings(){
+                [
+                    "events",
+                    "calculate",
+                    "raf",
+                    "handleWheel",
+                    "handleTouchStart",
+                    "handleTouchMove",
+                    "handleTouchEnd",
+                    "move",
+                ].forEach((method) => {
+                    this[method] = this[method].bind(this);
+                });
+            }
+            calculate(){
+                this.progress = 0;
+                this.wrapWidth = this.items[0].clientWidth * this.items.length;
+                this.wrap.style.width = `${this.wrapWidth}px`;
+                this.maxScroll = this.wrapWidth - this.el.clientWidth;
+            }
+            handleWheel(e){
+                this.progress += e.deltaY;
+                this.move();
+            }
+            handleTouchStart(e){
+                e.preventDefault();
+                this.dragging = true;
+                this.startX = e.clientX || e.touches[0].clientX;
+            }
+            handleTouchMove(e){
+                if (!this.dragging) return false;
+                const x = e.clientX || e.touches[0].clientX;
+                this.progress += (x - this.startX) * 2.5;
+                this.startX = x;
+                this.move();
+            }
+            handleTouchEnd(){
+                this.dragging = false;
+            }
+            move(){
+                this.progress = clamp(this.progress, 0, this.maxScroll);
+            }
+            events(){
+                window.addEventListener("resize", this.calculate);
+                window.addEventListener("wheel", this.handleWheel);
+                this.el.addEventListener("touchstart", this.handleTouchStart);
+                this.el.addEventListener("touchmove", this.handleTouchMove);
+                this.el.addEventListener("touchend", this.handleTouchEnd);
+
+                window.addEventListener("mousedown", this.handleTouchStart);
+                window.addEventListener("mousemove", this.handleTouchMove);
+                window.addEventListener("mouseup", this.handleTouchEnd);
+                document.body.addEventListener("mouseleave", this.handleTouchEnd);
+            }
+            raf(){
+                this.x = lerp(this.x, this.progress, 0.1);
+                this.playrate = this.x / this.maxScroll;
+                this.wrap.style.transform = `translateX(${-this.x}px)`;
+                this.bar.style.transform = `scaleX(${0.18 + this.playrate * 0.82})`;
+                this.speed = Math.min(100, this.oldX - this.x);
+                this.oldX = this.x;
+                this.items.forEach((item) => {
+                    item.style.transform = `scale(${1 - Math.abs(this.speed) * 0.005})`;
+                    item.querySelector("img").style.transform = `scaleX(${1 + Math.abs(this.speed) * 0.004})`;
+                });
+                requestAnimationFrame(this.raf);
+            }
+        }
+        const scroll = new DragScroll({
+            el: ".slider",
+            items: ".slider-item",
+            wrap: ".slider-wrapper",
+            bar: ".slider-progress-bar",
+        });
+    </script>
+</body>
+</html>
